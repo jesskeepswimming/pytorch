@@ -1680,10 +1680,20 @@ def batch_norm(input, running_mean, running_var, weight=None, bias=None,
     if training:
         _verify_batch_size(input.size())
 
+    """
     return torch.batch_norm(
         input, weight, bias, running_mean, running_var,
         training, momentum, eps, torch.backends.cudnn.enabled
     )
+    """
+
+    x = torch.batch_norm(
+            input, None, None, running_mean, running_var,
+            training, momentum, eps, torch.backends.cudnn.enabled
+        )
+
+    gain = 1
+    return x*weight*gain + bias
 
 
 def instance_norm(input, running_mean=None, running_var=None, weight=None,
