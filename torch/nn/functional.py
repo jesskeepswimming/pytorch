@@ -1687,13 +1687,17 @@ def batch_norm(input, running_mean, running_var, weight=None, bias=None,
     )
     """
 
+    # new return block
     x = torch.batch_norm(
-            input, None, None, running_mean, running_var,
-            training, momentum, eps, torch.backends.cudnn.enabled
-        )
+        input, None, None, running_mean, running_var,
+        training, momentum, eps, torch.backends.cudnn.enabled
+    )
 
     gain = 1
-    return x*weight*gain + bias
+ 
+    return x*weight[:,None,None]*gain + bias[:,None,None]
+
+
 
 
 def instance_norm(input, running_mean=None, running_var=None, weight=None,
